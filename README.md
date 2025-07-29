@@ -28,7 +28,7 @@ It provides a seamless shopping experience with features like:
 
 2. Install dependencies:
 
-   ```bash
+   ```
    npm install
    ```
 3. Start the development server:
