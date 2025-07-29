@@ -1,6 +1,3 @@
-
-
-````bash
 cat > README.md << 'EOF'
 # 🌸 Savana – Modern Fashion E-commerce Website
 
@@ -36,7 +33,7 @@ It offers a smooth shopping experience with clean design, interactive animations
 ```bash
 git clone https://github.com/your-username/savana.git
 cd savana
-````
+
 
 ### 2️⃣ Install dependencies
 
