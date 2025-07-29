@@ -217,7 +217,7 @@ const ProductDetail = () => {
                     onClick={() => setSelectedColor(color)}
                     className={`px-4 py-2 border rounded-md transition-colors ${
                       selectedColor === color
-                        ? 'border-accent bg-accent/10 text-accent'
+                        ? 'border-accent bg-accent/30 text-primary'
                         : 'border-border text-muted-foreground hover:border-accent/50'
                     }`}
                   >
@@ -237,7 +237,7 @@ const ProductDetail = () => {
                     onClick={() => setSelectedSize(size)}
                     className={`py-3 border rounded-md transition-colors ${
                       selectedSize === size
-                        ? 'border-accent bg-accent/10 text-accent'
+                        ? 'border-accent bg-accent/30 text-primary'
                         : 'border-border text-muted-foreground hover:border-accent/50'
                     }`}
                   >

@@ -77,8 +77,8 @@ const Lookbook = () => {
     }
   ];
 
-  const filteredLooks = selectedCategory === 'all' 
-    ? looks 
+  const filteredLooks = selectedCategory === 'all'
+    ? looks
     : looks.filter(look => look.category === selectedCategory);
 
   const [likedLooks, setLikedLooks] = useState(new Set(looks.filter(look => look.isLiked).map(look => look.id)));
@@ -117,7 +117,11 @@ const Lookbook = () => {
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className={selectedCategory === category.id ? "bg-accent text-accent-foreground" : ""}
+              className={
+                selectedCategory === category.id
+                  ? "bg-accent text-accent-foreground hover:bg-accent/70"
+                  : "hover:bg-accent/10"
+              }
             >
               {category.name}
             </Button>
@@ -136,19 +140,19 @@ const Lookbook = () => {
                     className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
+
                   {/* Overlay Actions */}
                   <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <button
                       onClick={() => toggleLike(look.id)}
                       className="p-2 bg-background/80 rounded-full"
                     >
-                      <Heart 
+                      <Heart
                         className={`h-4 w-4 ${
-                          likedLooks.has(look.id) 
-                            ? 'fill-red-500 text-red-500' 
+                          likedLooks.has(look.id)
+                            ? 'fill-red-500 text-red-500'
                             : 'text-muted-foreground'
-                        }`} 
+                        }`}
                       />
                     </button>
                     <button className="p-2 bg-background/80 rounded-full">
@@ -164,11 +168,11 @@ const Lookbook = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <h3 className="text-xl font-medium text-primary mb-2">{look.title}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{look.description}</p>
-                  
+
                   <div className="mb-4">
                     <h4 className="text-sm font-medium text-primary mb-2">Featured Items:</h4>
                     <ul className="space-y-1">
@@ -179,21 +183,21 @@ const Lookbook = () => {
                       ))}
                     </ul>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Heart 
+                      <Heart
                         className={`h-4 w-4 ${
-                          likedLooks.has(look.id) 
-                            ? 'fill-red-500 text-red-500' 
+                          likedLooks.has(look.id)
+                            ? 'fill-red-500 text-red-500'
                             : 'text-muted-foreground'
-                        }`} 
+                        }`}
                       />
                       <span className="text-sm text-muted-foreground">
                         {likedLooks.has(look.id) ? look.likes + 1 : look.likes} likes
                       </span>
                     </div>
-                    
+
                     <Button variant="outline" size="sm" className="elegant-underline">
                       Shop the Look
                     </Button>
