@@ -4,11 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Filter, Grid, List, Heart, Star } from 'lucide-react';
+import { useWishlist } from '@/contexts/WishlistContext'; // ✅ Import wishlist context
+import { useToast } from '@/hooks/use-toast';
+
 
 const Shop = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState('all');
-
+  const { wishlist, toggleWishlist } = useWishlist(); // ✅ Access wishlist
+  const { toast } = useToast();
   const categories = [
     { id: 'all', name: 'All Items' },
     { id: 'tops', name: 'Tops' },
@@ -167,78 +171,93 @@ const Shop = () => {
                 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
                 : 'grid-cols-1'
             }`}>
-              {filteredProducts.map((product) => (
-                <Card key={product.id} className="group hover-lift border-0 bg-card">
-                  <CardContent className="p-0">
-                    <Link to={`/product/${product.id}`}>
-                      <div className="relative overflow-hidden rounded-t-lg">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute top-4 left-4 flex flex-col gap-2">
-                          {product.isNew && (
-                            <Badge className="bg-accent text-accent-foreground">New</Badge>
-                          )}
-                          {product.isSale && (
-                            <Badge variant="destructive">Sale</Badge>
-                          )}
-                        </div>
-                        <button className="absolute top-4 right-4 p-2 bg-background/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <Heart className="h-4 w-4 text-muted-foreground" />
-                        </button>
-                      </div>
-                    </Link>
-                    
-                    <div className="p-4">
+              {filteredProducts.map((product) => {
+                const isWishlisted = wishlist.some(item => item.id === product.id); // ✅ check if in wishlist
+
+                return (
+                  <Card key={product.id} className="group hover-lift border-0 bg-card">
+                    <CardContent className="p-0">
                       <Link to={`/product/${product.id}`}>
-                        <h3 className="font-medium text-primary mb-2 hover:text-accent transition-colors">
-                          {product.name}
-                        </h3>
+                        <div className="relative overflow-hidden rounded-t-lg">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-64 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute top-4 left-4 flex flex-col gap-2">
+                            {product.isNew && (
+                              <Badge className="bg-accent text-accent-foreground">New</Badge>
+                            )}
+                            {product.isSale && (
+                              <Badge variant="destructive">Sale</Badge>
+                            )}
+                          </div>
+                          {/* ✅ Heart button with toggleWishlist */}
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleWishlist(product);
+                              toast({
+                            title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist",
+                            description: `${product.name} has been ${isWishlisted ? "removed" : "added"} to your wishlist.`,
+                            });
+                            }}
+                            className="absolute top-4 right-4 p-2 bg-background/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                          >
+                            <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
+                          </button>
+                        </div>
                       </Link>
                       
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="flex items-center">
-                          <Star className="h-4 w-4 fill-accent text-accent" />
-                          <span className="text-sm text-muted-foreground ml-1">
-                            {product.rating} ({product.reviews})
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="font-medium text-primary">${product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-sm text-muted-foreground line-through">
-                            ${product.originalPrice}
-                          </span>
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="text-xs text-muted-foreground">Colors:</span>
-                        {product.colors.map((color, index) => (
-                          <div
-                            key={index}
-                            className="w-4 h-4 rounded-full border border-border bg-muted"
-                            title={color}
-                          ></div>
-                        ))}
-                      </div>
-                      
-                      <Button 
-                        className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                        asChild
-                      >
+                      <div className="p-4">
                         <Link to={`/product/${product.id}`}>
-                          View Details
+                          <h3 className="font-medium text-primary mb-2 hover:text-accent transition-colors">
+                            {product.name}
+                          </h3>
                         </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                        
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="flex items-center">
+                            <Star className="h-4 w-4 fill-accent text-accent" />
+                            <span className="text-sm text-muted-foreground ml-1">
+                              {product.rating} ({product.reviews})
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="font-medium text-primary">${product.price}</span>
+                          {product.originalPrice && (
+                            <span className="text-sm text-muted-foreground line-through">
+                              ${product.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="text-xs text-muted-foreground">Colors:</span>
+                          {product.colors.map((color, index) => (
+                            <div
+                              key={index}
+                              className="w-4 h-4 rounded-full border border-border bg-muted"
+                              title={color}
+                            ></div>
+                          ))}
+                        </div>
+                        
+                        <Button 
+                          className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                          asChild
+                        >
+                          <Link to={`/product/${product.id}`}>
+                            View Details
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { ArrowLeft, Heart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext'; // ✅ Wishlist hook
 import { useToast } from '@/hooks/use-toast';
 
 // Extended product data
@@ -85,13 +86,16 @@ const productDetails = {
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { addItem } = useCart();
+  const { wishlist, toggleWishlist } = useWishlist(); // ✅ Use Wishlist
   const { toast } = useToast();
-  
+
   const product = productDetails[parseInt(id || '1') as keyof typeof productDetails];
-  
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
+
+  const isWishlisted = wishlist.some(item => item.id === product?.id); // ✅ Check wishlist
 
   if (!product) {
     return (
@@ -131,6 +135,19 @@ const ProductDetail = () => {
     });
   };
 
+  const handleToggleWishlist = () => {
+    toggleWishlist({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+    });
+    toast({
+      title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist",
+      description: `${product.name} has been ${isWishlisted ? "removed" : "added"} to your wishlist.`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -152,7 +169,7 @@ const ProductDetail = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            
+
             {product.images.length > 1 && (
               <div className="grid grid-cols-4 gap-4">
                 {product.images.map((image, index) => (
@@ -185,9 +202,9 @@ const ProductDetail = () => {
                   <Badge variant="destructive">Sale</Badge>
                 )}
               </div>
-              
+
               <h1 className="text-3xl font-light text-primary mb-4">{product.name}</h1>
-              
+
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center">
                   <Star className="h-5 w-5 fill-accent text-accent" />
@@ -247,7 +264,7 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Add to Cart */}
+            {/* Add to Cart + Wishlist */}
             <div className="flex gap-4">
               <Button 
                 onClick={handleAddToCart}
@@ -256,8 +273,8 @@ const ProductDetail = () => {
               >
                 Add to Cart
               </Button>
-              <Button variant="outline" size="lg">
-                <Heart className="h-5 w-5" />
+              <Button variant="outline" size="lg" onClick={handleToggleWishlist}>
+                <Heart className={`h-5 w-5 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`} />
               </Button>
             </div>
 
