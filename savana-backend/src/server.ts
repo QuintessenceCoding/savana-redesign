@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import products from "./data/products.json";
 
@@ -6,17 +6,17 @@ const app = express();
 app.use(cors({ origin: "*" })); // Allow all origins
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Savana Backend is running 🚀");
 });
 
 // ✅ Get all products
-app.get("/api/products", (req, res) => {
+app.get("/api/products", (req: Request, res: Response) => {
   res.json(products);
 });
 
 // ✅ Get product by ID
-app.get("/api/products/:id", (req, res) => {
+app.get("/api/products/:id", (req: Request, res: Response) => {
   const productId = parseInt(req.params.id);
   const product = products.find((p) => p.id === productId);
 
@@ -25,7 +25,7 @@ app.get("/api/products/:id", (req, res) => {
 });
 
 // ✅ Get related products by ID
-app.get("/api/products/:id/related", (req, res) => {
+app.get("/api/products/:id/related", (req: Request, res: Response) => {
   const productId = parseInt(req.params.id);
   const product = products.find((p) => p.id === productId);
 
