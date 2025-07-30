@@ -36,7 +36,15 @@ This project is **for educational and portfolio purposes only**.
 👉 [View the live site here](https://savana-redesign.vercel.app/) 
 
 ---
+## 📸 Screenshots  
 
+### 🖥️ Desktop View  
+![Desktop Screenshot](assets/desktop.png)  
+
+### 📱 Mobile View  
+![Mobile Screenshot](assets/mobile.png)  
+
+---
 ## ⚙️ Local Development
 
 ### 1️⃣ Clone the repo
