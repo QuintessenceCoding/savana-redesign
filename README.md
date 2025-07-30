@@ -82,16 +82,4 @@ This project is licensed under the **MIT License**.
 💖 *Made with passion for fashion.*
 EOF
 
-# Stage, commit, and push changes
 
-git add .
-git commit -m "Improve README with better structure and styling"
-git push origin main
-
-```
-
-This version:  
-✔️ Has sections separated with lines & emojis  
-✔️ Includes roadmap & contributing info  
-✔️ Feels complete while still simple
-```
