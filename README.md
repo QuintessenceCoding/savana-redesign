@@ -32,9 +32,8 @@ This project is **for educational and portfolio purposes only**.
 
 ---
 
-## 🔗 Live Demo
-- **Frontend (Vercel):** [https://your-vercel-link.vercel.app](#)  
-- **Backend (Render):** [https://your-render-link.onrender.com](#)  
+## 🚀 Live Demo  
+👉 [View the live site here](https://savana-redesign.vercel.app/) 
 
 ---
 
