@@ -39,10 +39,10 @@ This project is **for educational and portfolio purposes only**.
 ## 📸 Screenshots  
 
 ### 🖥️ Desktop View  
-![Desktop Screenshot](assets/desktop.png)  
+![Desktop Screenshot](screenshots/desktop.png)  
 
 ### 📱 Mobile View  
-![Mobile Screenshot](assets/mobile.png)  
+![Mobile Screenshot](screenshots/mobile.png)  
 
 ---
 ## ⚙️ Local Development
