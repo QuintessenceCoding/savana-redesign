@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Filter, Grid, List, Heart, Star } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
+import { API_BASE_URL } from "@/config"; // ✅ import config
 
 interface Product {
   id: number;
@@ -38,13 +40,12 @@ const Shop = () => {
     { id: "accessories", name: "Accessories" },
   ];
 
-  // ✅ Fetch products dynamically from backend
+  // ✅ Fetch products dynamically from backend using API_BASE_URL
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products");
-        const data = await res.json();
-        setProducts(data);
+        const res = await axios.get<Product[]>(`${API_BASE_URL}/api/products`);
+        setProducts(res.data);
       } catch (err) {
         console.error("Error fetching products:", err);
       } finally {
@@ -59,21 +60,15 @@ const Shop = () => {
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  if (loading) {
-    return <div className="text-center py-10">Loading products...</div>;
-  }
+  if (loading) return <div className="text-center py-10">Loading products...</div>;
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-4xl font-light text-primary mb-4">
-            Shop Collection
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Discover our carefully curated selection of timeless pieces
-          </p>
+          <h1 className="text-4xl font-light text-primary mb-4">Shop Collection</h1>
+          <p className="text-lg text-muted-foreground">Discover our carefully curated selection of timeless pieces</p>
         </div>
       </div>
 
@@ -131,23 +126,11 @@ const Shop = () => {
             {filteredProducts.length === 0 ? (
               <p>No products found in this category.</p>
             ) : (
-              <div
-                className={`grid gap-6 ${
-                  viewMode === "grid"
-                    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                    : "grid-cols-1"
-                }`}
-              >
+              <div className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
                 {filteredProducts.map((product) => {
-                  const isWishlisted = wishlist.some(
-                    (item) => item.id === product.id
-                  );
-
+                  const isWishlisted = wishlist.some((item) => item.id === product.id);
                   return (
-                    <Card
-                      key={product.id}
-                      className="group hover-lift border-0 bg-card"
-                    >
+                    <Card key={product.id} className="group hover-lift border-0 bg-card">
                       <CardContent className="p-0">
                         <Link to={`/product/${product.id}`}>
                           <div className="relative overflow-hidden rounded-t-lg">
@@ -157,78 +140,46 @@ const Shop = () => {
                               className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <div className="absolute top-4 left-4 flex flex-col gap-2">
-                              {product.isNew && (
-                                <Badge className="bg-accent text-accent-foreground">
-                                  New
-                                </Badge>
-                              )}
-                              {product.isSale && (
-                                <Badge variant="destructive">Sale</Badge>
-                              )}
+                              {product.isNew && <Badge className="bg-accent text-accent-foreground">New</Badge>}
+                              {product.isSale && <Badge variant="destructive">Sale</Badge>}
                             </div>
 
-                            {/* Heart Wishlist Button */}
+                            {/* Wishlist */}
                             <button
                               onClick={(e) => {
                                 e.preventDefault();
-                                toggleWishlist({
-                                  ...product,
-                                  image: product.images?.[0] || product.image,
-                                });
+                                toggleWishlist({ ...product, image: product.images?.[0] || product.image });
                                 toast({
-                                  title: isWishlisted
-                                    ? "Removed from Wishlist"
-                                    : "Added to Wishlist",
-                                  description: `${product.name} has been ${
-                                    isWishlisted ? "removed" : "added"
-                                  } to your wishlist.`,
+                                  title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist",
+                                  description: `${product.name} has been ${isWishlisted ? "removed" : "added"} to your wishlist.`,
                                 });
                               }}
                               className="absolute top-4 right-4 p-2 bg-background/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                             >
-                              <Heart
-                                className={`h-4 w-4 ${
-                                  isWishlisted
-                                    ? "fill-red-500 text-red-500"
-                                    : "text-muted-foreground"
-                                }`}
-                              />
+                              <Heart className={`h-4 w-4 ${isWishlisted ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
                             </button>
                           </div>
                         </Link>
 
                         <div className="p-4">
                           <Link to={`/product/${product.id}`}>
-                            <h3 className="font-medium text-primary mb-2 hover:text-accent transition-colors">
-                              {product.name}
-                            </h3>
+                            <h3 className="font-medium text-primary mb-2 hover:text-accent transition-colors">{product.name}</h3>
                           </Link>
 
                           <div className="flex items-center gap-2 mb-2">
                             <Star className="h-4 w-4 fill-accent text-accent" />
-                            <span className="text-sm text-muted-foreground ml-1">
-                              {product.rating} ({product.reviews})
-                            </span>
+                            <span className="text-sm text-muted-foreground ml-1">{product.rating} ({product.reviews})</span>
                           </div>
 
                           <div className="flex items-center gap-2 mb-3">
-                            <span className="font-medium text-primary">
-                              ${product.price}
-                            </span>
+                            <span className="font-medium text-primary">${product.price}</span>
                             {product.originalPrice && (
-                              <span className="text-sm text-muted-foreground line-through">
-                                ${product.originalPrice}
-                              </span>
+                              <span className="text-sm text-muted-foreground line-through">${product.originalPrice}</span>
                             )}
                           </div>
 
-                          <Button
-                            className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                            asChild
-                          >
-                            <Link to={`/product/${product.id}`}>
-                              View Details
-                            </Link>
+                          <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" asChild>
+                            <Link to={`/product/${product.id}`}>View Details</Link>
                           </Button>
                         </div>
                       </CardContent>

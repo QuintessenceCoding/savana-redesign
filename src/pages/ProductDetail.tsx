@@ -7,6 +7,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { API_BASE_URL } from "@/config"; // ✅ use env config
 
 interface Product {
   id: number;
@@ -39,28 +40,21 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState("");
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get<Product>(`http://localhost:5000/api/products/${id}`);
-        setProduct(res.data);
+        const [productRes, relatedRes] = await Promise.all([
+          axios.get<Product>(`${API_BASE_URL}/api/products/${id}`),
+          axios.get<Product[]>(`${API_BASE_URL}/api/products/${id}/related`)
+        ]);
+        setProduct(productRes.data);
+        setRelated(relatedRes.data);
       } catch (err) {
-        console.error("Error fetching product:", err);
+        console.error("Error fetching product details:", err);
       } finally {
         setLoading(false);
       }
     };
-
-    const fetchRelated = async () => {
-      try {
-        const res = await axios.get<Product[]>(`http://localhost:5000/api/products/${id}/related`);
-        setRelated(res.data);
-      } catch (err) {
-        console.error("Error fetching related products:", err);
-      }
-    };
-
-    fetchProduct();
-    fetchRelated();
+    fetchData();
   }, [id]);
 
   if (loading) return <div className="p-10 text-center">Loading product details...</div>;
@@ -101,7 +95,7 @@ const ProductDetail = () => {
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Images */}
+          {/* Product Images */}
           <div className="space-y-4">
             <img src={product.images[selectedImage]} alt={product.name} className="w-full rounded-lg" />
             <div className="grid grid-cols-4 gap-3">
@@ -115,7 +109,6 @@ const ProductDetail = () => {
 
           {/* Product Info */}
           <div className="space-y-6">
-            {/* Labels */}
             <div className="flex gap-2">
               {product.isNew && <Badge className="bg-accent">New</Badge>}
               {product.isSale && <Badge variant="destructive">Sale</Badge>}
@@ -132,7 +125,7 @@ const ProductDetail = () => {
               {product.originalPrice && <span className="line-through text-muted-foreground">${product.originalPrice}</span>}
             </div>
 
-            {/* Color Selection */}
+            {/* Colors */}
             <h3 className="font-medium">Colors</h3>
             <div className="flex gap-2">
               {product.colors.map((color) => (
@@ -143,7 +136,7 @@ const ProductDetail = () => {
               ))}
             </div>
 
-            {/* Size Selection */}
+            {/* Sizes */}
             <h3 className="font-medium mt-4">Sizes</h3>
             <div className="grid grid-cols-5 gap-2">
               {product.sizes.map((size) => (

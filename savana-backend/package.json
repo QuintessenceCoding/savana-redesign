@@ -1,27 +1,18 @@
 {
   "name": "savana-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
-    "@types/node": "^24.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.3.3"
   }
 }
