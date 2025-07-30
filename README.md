@@ -1,39 +1,50 @@
-cat > README.md << 'EOF'
-# 🌸 Savana – Modern Fashion E-commerce Website
+# Savana – Modern Fashion E-commerce Website (Redesign)
 
-**Savana** is a modern and elegant **fashion e-commerce** web application built with **React (Vite) + TypeScript**, styled using **Tailwind CSS**, and powered by **ShadCN UI**.  
-It offers a smooth shopping experience with clean design, interactive animations, and essential e-commerce functionalities.
-
----
-
-## ✨ Features
-- 🛍️ **Beautiful Product Pages** – with size & color selection
-- 🛒 **Shopping Cart** – add/remove products with ease
-- ❤️ **Wishlist Support** – *(coming soon)*
-- 👗 **Lookbook** – style inspiration with categories & hover effects
-- 🔍 **Category Filtering** – quickly find what you’re looking for
-- 📱 **Responsive UI** – works on all screen sizes
-- 🎨 **Smooth Animations** – a delightful user experience
+An **unofficial redesign concept** of the Savana online fashion store.  
+Built to showcase a modern UI/UX with a functional full-stack implementation (React + Vite frontend & Express backend).  
+This project is **for educational and portfolio purposes only**.
 
 ---
 
-## 🚀 Tech Stack
-- ⚛️ **React + Vite** – fast and modern frontend setup  
-- 📘 **TypeScript** – type safety for maintainable code  
-- 🎨 **Tailwind CSS** – utility-first styling  
-- 🧩 **ShadCN UI** – accessible, elegant UI components  
-- 🛠️ **React Router** – client-side navigation  
-- 🔄 **React Query** – data fetching & caching (for future API integration)  
+## 🚀 Features
+
+- 🛍️ **Dynamic Product Pages** – Fetch products and display details from backend  
+- ❤️ **Wishlist Functionality** – Save favorite items  
+- 🛒 **Cart System** – Add products with selected size & color  
+- 🔗 **Related Products** – Recommendations based on category  
+- 🎨 **Modern UI/UX** – Built with Tailwind CSS & shadcn/ui  
+- 🌐 **Fully Deployed** – Backend on Render, frontend on Vercel  
 
 ---
 
-## 🛠️ Getting Started
+## 🛠️ Tech Stack
 
-### 1️⃣ Clone the repository
+### **Frontend**
+- React + Vite  
+- Tailwind CSS + shadcn/ui  
+- Axios for API calls  
+- Context API for cart & wishlist management  
+
+### **Backend**
+- Node.js + Express  
+- CORS & dotenv  
+- Hosted on Render  
+
+---
+
+## 🔗 Live Demo
+- **Frontend (Vercel):** [https://your-vercel-link.vercel.app](#)  
+- **Backend (Render):** [https://your-render-link.onrender.com](#)  
+
+---
+
+## ⚙️ Local Development
+
+### 1️⃣ Clone the repo
 ```bash
-git clone https://github.com/your-username/savana.git
-cd savana
-```
+git clone https://github.com/QuintessenceCoding/savana-redesign.git
+cd savana-redesign
+````
 
 ### 2️⃣ Install dependencies
 
@@ -41,45 +52,39 @@ cd savana
 npm install
 ```
 
-### 3️⃣ Run the development server
+### 3️⃣ Setup environment variables
+
+Create a `.env` file in the root folder:
+
+```
+VITE_API_URL=http://localhost:5000
+```
+
+### 4️⃣ Run backend
+
+```bash
+cd savana-backend
+npm install
+npm run dev
+```
+
+### 5️⃣ Run frontend
 
 ```bash
 npm run dev
 ```
 
-Visit **[http://localhost:5173/](http://localhost:5173/)** to view the app.
+---
+
+## ⚠️ Disclaimer
+
+This is an **unofficial redesign project** made **solely for learning and demonstration purposes**.
+All product names, logos, and images used belong to their respective owners (Savana).
+There is **no affiliation or commercial intent** with the original Savana brand.
 
 ---
 
-## 📌 Roadmap
+## 📌 Author
 
-* ✅ Wishlist functionality
-* ✅ Enhanced product search & filtering
-* 🔒 User authentication & profiles
-* 🛠️ Admin dashboard for product management
-* 📸 Product image gallery with zoom & carousel
-
----
-
-## 📷 Screenshots
-
-*(Coming soon – will be added after final UI updates)*
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to fork the repo and submit a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
----
-
-💖 *Made with passion for fashion.*
-
-
-
+👩‍💻 **Ishika Vashisht**
+🔗 [GitHub](https://github.com/QuintessenceCoding)
